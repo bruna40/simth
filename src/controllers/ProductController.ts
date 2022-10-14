@@ -8,8 +8,12 @@ class ProductController {
   }
 
   static async createProduct(request: Request, response: Response) {
-    const product = await ProductService.create(request.body);
-    response.status(201).json(product);
+    try {
+      const product = await ProductService.create(request.body);
+      response.status(201).send(product);
+    } catch (error) {
+      response.status(500).send(error);
+    }
   }
 }
 export default ProductController;
