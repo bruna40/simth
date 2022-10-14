@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import ProductService from '../services/ProductService';
 
-export default class ProductController {
+class ProductController {
   static async getProducts(request: Request, response: Response) {
     const products = await ProductService.get();
     response.status(200).json(products);
@@ -12,3 +12,4 @@ export default class ProductController {
     response.status(201).json(product);
   }
 }
+export default ProductController;
