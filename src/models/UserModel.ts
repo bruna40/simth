@@ -15,6 +15,7 @@ class UserModel {
     const token = jwt.sign({ id }, auth.secret, {
       expiresIn: auth.expires,
     });
+    
     return token;
   }
 
