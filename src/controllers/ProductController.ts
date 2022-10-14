@@ -12,12 +12,8 @@ class ProductsController {
   }
 
   static async createProduct(req: Request, res: Response) {
-    try {
-      const productCreated = await ProductsService.register(req.body);
-      res.status(201).send(productCreated);
-    } catch (error) {
-      res.status(500).send(error);
-    }
+    const productCreated = await ProductsService.register(req.body);
+    return res.status(201).send(productCreated);
   }
 }
 
