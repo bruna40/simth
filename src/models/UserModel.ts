@@ -3,9 +3,10 @@ import jwt from 'jsonwebtoken';
 import connection from './connection';
 import { User } from '../interfaces/Users';
 
+const secret = String(process.env.JWT_SECRET);
 export default class UserModel {
   static async tokenJWT(id:number) {
-    const token = jwt.sign({ id }, String(process.env.JWT_SECRET), { expiresIn: '1d' });
+    const token = jwt.sign({ id }, secret, { expiresIn: '1d' });
     return token;
   }
 

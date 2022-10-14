@@ -14,7 +14,7 @@ export default class ProductModel {
     return products;
   }
 
-  static async create(product: Omit<Product, 'id'>) {
+  static async create(product: Product) {
     const [result] = await connection.execute<ResultSetHeader>(
       'INSERT INTO Trybesmith.Products (name, amount) VALUES (?, ?)',
       [product.name, product.amount],
