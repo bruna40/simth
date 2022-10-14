@@ -1,18 +1,26 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import jwt from 'jsonwebtoken';
-import connection from './connection';
 import { User } from '../interfaces/Users';
+import connection from './connection';
+import auth from '../middlewares/auth';
 
-const secret = String(process.env.JWT_SECRET);
-export default class UserModel {
-  static async tokenJWT(id:number) {
-    const token = jwt.sign({ id }, secret, { expiresIn: '1d' });
+class UserModel {
+  static async getAll() {
+    const query = 'SELECT * FROM Trybesmith.Users';
+    const [result] = await connection.query<ResultSetHeader>(query);
+    return result;
+  }
+
+  static async token(id: number) {
+    const token = jwt.sign({ id }, auth.secret, {
+      expiresIn: auth.expires,
+    });
     return token;
   }
 
-  static async createUser(user: User) {
+  static async create(user: User) {
     const query = `INSERT INTO Trybesmith.Users 
-    (username, classe, level, password) VALUES (?,?,?,?)`;
+        (username, classe, level, password) VALUES (?,?,?,?)`;
     const [result] = await connection.query<ResultSetHeader>(query, [
       user.username,
       user.classe,
@@ -20,7 +28,9 @@ export default class UserModel {
       user.password,
     ]);
     return {
-      token: await UserModel.tokenJWT(result.insertId),
+      token: await UserModel.token(result.insertId),
     };
   }
 }
+
+export default UserModel;
