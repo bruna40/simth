@@ -9,7 +9,7 @@ export default class OrdersModel {
     ON orders.id = products.orderId
     GROUP BY orders.id
     ORDER BY orders.userId;`;
-    const [orders] = await connection.execute(query);
+    const [orders] = await connection.query(query);
     return orders as Orders[];
   }
 }

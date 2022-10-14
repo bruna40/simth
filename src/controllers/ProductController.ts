@@ -7,12 +7,12 @@ class ProductController {
     response.status(200).json(products);
   }
 
-  static async createProduct(request: Request, response: Response) {
+  static async createProduct(req: Request, res: Response) {
     try {
-      const product = await ProductService.create(request.body);
-      response.status(201).send(product);
+      const productCreated = await ProductService.create(req.body);
+      res.status(201).send(productCreated);
     } catch (error) {
-      response.status(500).send(error);
+      res.status(500).send(error);
     }
   }
 }

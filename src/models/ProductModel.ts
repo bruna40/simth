@@ -10,7 +10,7 @@ export default class ProductModel {
 
   static async getById(id: number): Promise<any> {
     const query = 'SELECT * FROM Trybesmith.Products WHERE id = ?';
-    const [products] = await connection.execute<ResultSetHeader>(query, [id]);
+    const [products] = await connection.query<ResultSetHeader>(query, [id]);
     return products;
   }
 
