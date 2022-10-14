@@ -7,7 +7,7 @@ export default class ProductService {
     return products;
   }
 
-  static async create(product: Omit<Product, 'id'>) {
+  static async create(product: Product) {
     const products = await ProductModel.create(product);
     return products;
   }
