@@ -4,6 +4,6 @@ import OrderController from '../controllers/OrderController';
 const router = Router();
 
 router
-  .get('/', OrderController.getAll);
+  .get('/orders', OrderController.getAll);
 
 export default router;

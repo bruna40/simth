@@ -1,6 +1,6 @@
 export interface Product {
   id?: number;
   name: string;
-  amount: number;
+  amount: string;
   orderId: number;
 }
