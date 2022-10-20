@@ -9,9 +9,9 @@ export default function validateAmountProduct(req:Request, res:Response, next:Ne
   if (typeof amount !== 'string') {
     return res.status(422).json({ message: '"amount" must be a string' });
   }
-  if (amount.length < 3) {
+  if (amount.length < 2) {
     return res.status(422).json({ 
-      message: '"amount" length must be at least 3 characters long"',
+      message: '"amount" length must be at least 3 characters long',
     });
   }
 

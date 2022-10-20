@@ -9,7 +9,7 @@ export default function validateClasseUsers(req: Request, res: Response, next: N
   if (typeof classe !== 'string') {
     return res.status(422).json({ message: '"classe" must be a string' });
   }
-  if (classe.length < 3) {
+  if (classe.length < 2) {
     return res.status(422).json({ 
       message: '"classe" length must be at least 3 characters long',
     });
