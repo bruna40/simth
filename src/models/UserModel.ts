@@ -6,8 +6,13 @@ import auth from '../middlewares/auth';
 
 class UserModel {
   static async getAll() {
-    const query = 'SELECT * FROM Trybesmith.Users';
-    const [result] = await connection.query<ResultSetHeader>(query);
+    const [result] = await connection.execute<ResultSetHeader>('SELECT * FROM Trybesmith.Users');
+    return result;
+  }
+
+  static async getById(id: number) {
+    const [result] = await connection.execute<ResultSetHeader>(`SELECT * FROM Trybesmith.Users 
+      WHERE id = ?`, [id]);
     return result;
   }
 
@@ -20,17 +25,18 @@ class UserModel {
   }
 
   static async create(user: User) {
-    const query = `INSERT INTO Trybesmith.Users 
-        (username, classe, level, password) VALUES (?,?,?,?)`;
-    const [result] = await connection.query<ResultSetHeader>(query, [
-      user.username,
-      user.classe,
-      user.level,
-      user.password,
-    ]);
+    const [result] = await connection.execute<ResultSetHeader>(
+      `INSERT INTO Trybesmith.Users 
+        (username, classe, level, password) VALUES (?,?,?,?)`,
+      [
+        user.username,
+        user.classe,
+        user.level,
+        user.password,
+      ],
+    );
     return {
       token: await UserModel.token(result.insertId),
-      ...result,
     };
   }
 }
