@@ -1,5 +1,5 @@
 import UserModel from '../models/UserModel';
-import { User } from '../interfaces/Users';
+import { User } from '../@types/Users';
 
 export default class UserService {
   static async register(user: User) {

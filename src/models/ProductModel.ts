@@ -1,5 +1,5 @@
 import { ResultSetHeader } from 'mysql2/promise';
-import { Product } from '../interfaces/Products';
+import { Product } from '../@types/Products';
 import connection from './connection';
 
 class ProductsRoute {

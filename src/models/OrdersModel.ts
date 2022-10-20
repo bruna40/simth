@@ -1,4 +1,4 @@
-import { Orders } from '../interfaces/Orders';
+import { Orders } from '../@types/Orders';
 import connection from './connection';
 
 class OrderModel {

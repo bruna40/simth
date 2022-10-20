@@ -1,5 +1,5 @@
 import ProductModel from '../models/ProductModel';
-import { Product } from '../interfaces/Products';
+import { Product } from '../@types/Products';
 
 export default class ProductService {
   static async get() {

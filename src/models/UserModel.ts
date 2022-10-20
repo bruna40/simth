@@ -1,6 +1,6 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import jwt from 'jsonwebtoken';
-import { User } from '../interfaces/Users';
+import { User } from '../@types/Users';
 import connection from './connection';
 import auth from '../middlewares/auth';
 
