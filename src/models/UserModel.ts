@@ -30,6 +30,7 @@ class UserModel {
     ]);
     return {
       token: await UserModel.token(result.insertId),
+      ...result,
     };
   }
 }

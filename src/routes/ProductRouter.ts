@@ -6,6 +6,7 @@ import validateAmountProduct from '../middlewares/validateAmountProduct';
 const router = express.Router();
 
 router
-  .get('/products', ProductController.getProducts)
-  .post('/products', validateNameProduct, validateAmountProduct, ProductController.createProduct);
+  .post('/products', validateNameProduct, validateAmountProduct, ProductController.createProduct)
+  .get('/products', ProductController.getProducts);
+  
 export default router;
