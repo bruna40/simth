@@ -9,7 +9,7 @@ export default function validateLevelUsers(req: Request, res: Response, next: Ne
   if (typeof level !== 'number') {
     return res.status(422).json({ message: '"level" must be a number' });
   }
-  if (level < 1) {
+  if (level <= 0) {
     return res.status(422).json({ 
       message: '"level" must be greater than or equal to 1',
     });

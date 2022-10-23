@@ -10,15 +10,20 @@ class ProductsRoute {
     return products;
   }
 
-  static async create(product: Omit<Product, 'id'>) {
-    const [result] = await connection.execute<ResultSetHeader>(
+  static async create({ name, amount }: Product): Promise<Product> {
+    const [{ insertId }] = await connection.execute<ResultSetHeader>(
       'INSERT INTO Trybesmith.Products (name, amount) VALUES (?, ?)',
-      [product.name, product.amount],
+      [name, amount],
     );
-    return {
-      id: result.insertId,
-      ...result,
-    };
+    return { id: insertId, name, amount };
+  }
+
+  static async update(productId: number, orderId:number): Promise<number> {
+    await connection.execute(
+      'UPDATE Trybesmith.Products SET orderId=(?) WHERE id=(?);',
+      [productId, orderId],
+    );
+    return productId;
   }
 }
 

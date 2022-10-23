@@ -1,8 +1,8 @@
 import { ResultSetHeader } from 'mysql2/promise';
-import jwt from 'jsonwebtoken';
 import { User } from '../@types/Users';
 import connection from './connection';
-import auth from '../middlewares/auth';
+import { Login } from '../@types/Login';
+import generateToken from '../services/generateToken';
 
 class UserModel {
   static async getAll() {
@@ -16,28 +16,25 @@ class UserModel {
     return result;
   }
 
-  static async token(id: number) {
-    const token = jwt.sign({ id }, auth.secret, {
-      expiresIn: auth.expires,
-    });
-    
-    return token;
-  }
-
-  static async create(user: User) {
-    const [result] = await connection.execute<ResultSetHeader>(
+  static async create({ username, classe, level, password }: User): Promise<string> {
+    await connection.execute<ResultSetHeader>(
       `INSERT INTO Trybesmith.Users 
         (username, classe, level, password) VALUES (?,?,?,?)`,
       [
-        user.username,
-        user.classe,
-        user.level,
-        user.password,
+        username,
+        classe,
+        level,
+        password,
       ],
     );
-    return {
-      token: await UserModel.token(result.insertId),
-    };
+    const token = generateToken({ username });
+    return token;
+  }
+
+  static async getLogin({ username, password }: Login) {
+    const [result] = await connection.execute<ResultSetHeader>(`SELECT * FROM Trybesmith.Users 
+      WHERE username = ? AND password = ?`, [username, password]);
+    return result;
   }
 }
 
