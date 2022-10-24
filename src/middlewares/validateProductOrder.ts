@@ -1,16 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+export default function validateProductOrder(productsIds: number[]) {
+  if (!productsIds) return { type: 400, message: '"productsIds" is required' };
 
-export default function validateProductOrder(req: Request, res: Response, next: NextFunction) {
-  const { productsIds } = req.body;
-
-  if (!productsIds) {
-    return res.status(400).json({ message: '"productsIds" is required' });
-  }
-  if (!Array.isArray(productsIds)) {
-    return res.status(422).json({ message: '"productsIds" must be an array' });
+  if (typeof productsIds !== 'object') {
+    return { type: 422, message: '"productsIds" must be an array' };
   }
   if (!productsIds.length) {
-    return res.status(422).json({ message: '"productsIds" must include only numbers' });
-  }
-  next();
+    return { type: 422, message: '"productsIds" must include only numbers' };
+  } 
+  return { message: 'error' };
 }

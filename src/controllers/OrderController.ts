@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import DecodeToken from '../@types/DecodeToken';
-import OrderService from '../services/OrderService';
 import ProductService from '../services/ProductService';
+import OrderService from '../services/OrderService';
 
 export default class OrderController {
   static async getAllOrders(_req:Request, res:Response) {
@@ -14,11 +14,18 @@ export default class OrderController {
     const { productsIds } = req.body;
     const { authorization } = req.headers;
 
-    const { payload } = verify(authorization as string, 'secret') as DecodeToken;
+    const payload = verify(authorization as string, 'secret') as DecodeToken;
+    
     const userId = payload.id;
-    const orderCreate = await OrderService.createOrder(userId);
-    await ProductService.updateOrder(productsIds, orderCreate);
 
-    return res.status(201).json({ userId, productsIds });
+    const { type, message } = await OrderService.createOrder(userId, productsIds);
+    
+    if (type) {
+      return res.status(type).json({ message });
+    }
+    
+    await ProductService.updateOrder(productsIds, message);
+
+    res.status(201).json({ userId, productsIds });
   }
 }
