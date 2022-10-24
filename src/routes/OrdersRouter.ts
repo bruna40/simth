@@ -1,7 +1,7 @@
 import express from 'express';
 import OrderController from '../controllers/OrderController';
+import validateOrders from '../middlewares/validateOrder';
 import validateProductOrder from '../middlewares/validateProductOrder';
-import validateOrders from '../middlewares/vallidateOrders';
 
 const router = express.Router();
 

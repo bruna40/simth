@@ -14,7 +14,7 @@ export default class OrderController {
     const { productsIds } = req.body;
     const { authorization } = req.headers;
 
-    const payload = verify(authorization as string, 'secret') as DecodeToken;
+    const { payload } = verify(authorization as string, 'secret') as DecodeToken;
     const userId = payload.id;
     const orderCreate = await OrderService.createOrder(userId);
     await ProductService.updateOrder(productsIds, orderCreate);

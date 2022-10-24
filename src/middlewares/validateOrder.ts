@@ -16,6 +16,6 @@ export default async function validateOrders(req: Request, res: Response, next: 
       next();
     }
   } catch (err) {   
-    return res.status(401).json({ message: 'Expired or invalid token' });
+    return res.status(401).json({ message: 'Invalid token' });
   }
 }
