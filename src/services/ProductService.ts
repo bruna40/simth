@@ -14,20 +14,19 @@ export default class ProductService {
   }
 
   static async updateOrder(productsId: number[], orderId: number): Promise<number[] | Message> {
-    if (!productsId) {
-      return { statusCode: 400, message: '"productsIds" is required' };
-    } 
+    if (!productsId) return { statusCode: 400, message: '"productsIds" is required' };
     if (!Array.isArray(productsId)) {
       return { statusCode: 422, message: '"productsIds" must be an array' };
     }
     if (!productsId.length) {
       return { statusCode: 422, message: '"productsIds" must include only numbers' };
     }
-    const products = await Promise.all(productsId.map(async (id) => {
-      const product = await ProductModel.update(id, orderId);
-      return product;
+
+    const productsIds = await Promise.all(productsId.map(async (id) => {
+      const productId = await ProductModel.update(id, orderId);
+      return productId;
     }));
 
-    return products;
+    return productsIds;
   }
 }
