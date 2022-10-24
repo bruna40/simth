@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { verify } from 'jsonwebtoken';
-import DecodeToken from '../@types/DecodeToken';
+// import { verify } from 'jsonwebtoken';
+// import DecodeToken from '../@types/DecodeToken';
 import OrderService from '../services/OrderService';
 
 export default class OrderController {
@@ -9,15 +9,15 @@ export default class OrderController {
     res.status(200).json(orders);
   }
 
-  static async registerOrder(req:Request, res:Response) {
-    const { productsIds } = req.body;
-    const { authorization } = req.headers;
+  // static async registerOrder(req:Request, res:Response) {
+  //   const { productsIds } = req.body;
+  //   const { authorization } = req.headers;
 
-    const { payload } = verify(authorization as string, 'secret') as DecodeToken;
-    const userId = payload.id;
+  //   const { payload } = verify(authorization as string, 'secret') as DecodeToken;
+  //   const userId = payload.id;
 
-    const insertId = await OrderService.createOrder(userId);
+  //   const insertId = await OrderService.createOrder(userId);
 
-    return res.status(201).json({ insertId, productsIds });
-  }
+  //   return res.status(201).json({ insertId, productsIds });
+  // }
 }
