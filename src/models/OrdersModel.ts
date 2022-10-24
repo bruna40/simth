@@ -10,14 +10,14 @@ class OrderModel {
         INNER JOIN Trybesmith.Products as products
         ON orders.id = products.orderId
         GROUP BY orders.id
-        ORDER BY orders.userId;`);
+        ORDER BY orders.userId;`);  
 
     return orders as Orders[];
   }
 
   static async create(userId: number) {
     const [{ insertId }] = await connection.execute<ResultSetHeader>(
-      'INSERT INTO Trybesmith.Orders (userId) VALUES (?)',
+      'INSERT INTO Trybesmith.Orders (userId) VALUES (?);',
       [userId],
     );
 

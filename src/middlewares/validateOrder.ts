@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
+import DecodeToken from '../@types/DecodeToken';
+import UserModel from '../models/UserModel';
 
 export default async function validateOrders(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
@@ -9,8 +11,13 @@ export default async function validateOrders(req: Request, res: Response, next: 
   }
 
   try {
-    verify(authorization as string, process.env.JWT_SECRET as string);
-    next();
+    const { payload } = verify(authorization as string, 'secret' as string) as DecodeToken;
+    
+    const [user] = await UserModel.getById(payload.id);
+
+    if (!user) {
+      next();
+    }
   } catch (err) {
     return res.status(401).json({ message: 'Invalid token' });
   }

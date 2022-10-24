@@ -1,5 +1,4 @@
 import OrdersModel from '../models/OrdersModel';
-import validateProductOrder from '../middlewares/validateProductOrder';
 
 export default class OrderService {
   static async getOrders() {
@@ -7,15 +6,8 @@ export default class OrderService {
     return orders;
   }
 
-  static async createOrder(id: number, productsIds: number[]) {
-    const idsValidation = validateProductOrder(productsIds);
-
-    if (idsValidation.type) {
-      return idsValidation;
-    }
-
-    const orderId: number = await OrdersModel.create(id);
-    
-    return { type: null, message: orderId };
+  static async createOrder(userId: number): Promise<number> {
+    const order = await OrdersModel.create(userId);
+    return order;
   }
 }

@@ -18,7 +18,7 @@ class ProductsRoute {
     return { id: insertId, name, amount };
   }
 
-  static async update(productId: number, orderId:number | string): Promise<number> {
+  static async update(productId: number, orderId:number): Promise<number> {
     await connection.execute(
       'UPDATE Trybesmith.Products SET orderId=(?) WHERE id=(?);',
       [productId, orderId],

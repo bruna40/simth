@@ -14,17 +14,17 @@ export default class OrderController {
     const { productsIds } = req.body;
     const { authorization } = req.headers;
 
-    const payload = verify(authorization as string, 'secret') as DecodeToken;
+    const { payload } = verify(authorization as string, 'secret') as DecodeToken;
     
     const userId = payload.id;
 
-    const { type, message } = await OrderService.createOrder(userId, productsIds);
-    
-    if (type) {
-      return res.status(type).json({ message });
+    const insertId = await OrderService.createOrder(userId);
+
+    const product = await ProductService.updateOrder(productsIds, insertId);
+
+    if ('message' in product) {
+      return res.status(product.statusCode as number).json({ message: product.message });
     }
-    
-    await ProductService.updateOrder(productsIds, message);
 
     res.status(201).json({ userId, productsIds });
   }
