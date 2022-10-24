@@ -1,7 +1,6 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import jwt from 'jsonwebtoken';
 import { User } from '../@types/Users';
-import { Login } from '../@types/Login';
 import connection from './connection';
 import auth from '../middlewares/auth';
 
@@ -11,10 +10,10 @@ class UserModel {
     return result;
   }
 
-  static async getById(id: number) {
-    const [result] = await connection.execute<ResultSetHeader>(`SELECT * FROM Trybesmith.Users 
+  static async getById(id: number): Promise<User[] | []> {
+    const [result] = await connection.execute(`SELECT * FROM Trybesmith.Users 
       WHERE id = ?`, [id]);
-    return result;
+    return result as User[];
   }
 
   static async token(id: number) {
@@ -39,10 +38,12 @@ class UserModel {
     };
   }
 
-  static async getLogin({ username, password }: Login) {
-    const [result] = await connection.execute<ResultSetHeader>(`SELECT * FROM Trybesmith.Users 
-      WHERE username = ? AND password = ?`, [username, password]);
-    return result;
+  static async getLogin(username: string, password: string): Promise<User[] | []> {
+    const [result] = await connection.execute(
+      'SELECT * FROM Trybesmith.Users WHERE username = ? AND password = ?',
+      [username, password],
+    );
+    return result as User[];
   }
 }
 

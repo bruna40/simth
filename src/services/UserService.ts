@@ -8,8 +8,8 @@ export default class UserService {
     return users;
   }
 
-  static async findLogin(login: Login) {
-    const users = await UserModel.getLogin(login);
+  static async login(login: Login) {
+    const users = await UserModel.getLogin(login.username, login.password);
     return users;
   }
 }

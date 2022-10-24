@@ -1,11 +1,21 @@
-// import { Request, Response, nextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { verify } from 'jsonwebtoken';
+import DecodeToken from '../@types/DecodeToken';
+import UserModel from '../models/UserModel';
 
-// export default function validateToken(req: Request, res: Response, next: NextFunction) {
-//   const { token } = req.headers;
-        
-//   if (!token) {
-//     return res.status(400).json({ message: '"token" is required' });
-//   }
+export default async function validateOrders(req: Request, res: Response, next: NextFunction) {
+  const { authorization } = req.headers;
 
-//   next();
-// }
+  if (!authorization) {
+    return res.status(401).json({ message: 'Token not found' });
+  }
+  try { 
+    const { payload } = verify(authorization as string, 'secret') as DecodeToken;
+    const [user] = await UserModel.getById(payload.id);
+    if (user) {
+      next();
+    }
+  } catch (err) {   
+    return res.status(401).json({ message: 'Expired or invalid token' });
+  }
+}
