@@ -13,7 +13,7 @@ export default class ProductService {
     return products;
   }
 
-  static async updateOrder(productsId: number[], orderId: number): Promise<number[] | Message> {
+  static async validateOrder(productsId: number) {
     if (!productsId) return { statusCode: 400, message: '"productsIds" is required' };
     if (!Array.isArray(productsId)) {
       return { statusCode: 422, message: '"productsIds" must be an array' };
@@ -21,7 +21,9 @@ export default class ProductService {
     if (!productsId.length) {
       return { statusCode: 422, message: '"productsIds" must include only numbers' };
     }
+  }
 
+  static async updateOrder(productsId: number[], orderId: number): Promise<number[]> {
     const productsIds = await Promise.all(productsId.map(async (id) => {
       const productId = await ProductModel.update(id, orderId);
       return productId;
