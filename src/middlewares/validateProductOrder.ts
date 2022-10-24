@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 
 export default function validateProductOrder(req: Request, res: Response, next: NextFunction) {
-  const { ProductIds } = req.body;
-  if (!ProductIds) {
-    return res.status(400).json({ message: '"ProductIds" is required' });
+  const { productsIds } = req.body;
+
+  if (!productsIds) {
+    return res.status(400).json({ message: '"productsIds" is required' });
   }
-  if (!Array.isArray(ProductIds)) {
-    return res.status(422).json({ message: '"ProductIds" must be an array' });
+  if (!Array.isArray(productsIds)) {
+    return res.status(422).json({ message: '"productsIds" must be an array' });
   }
-  if (ProductIds.length === 0) {
+  if (!productsIds.length) {
     return res.status(422).json({ message: '"productsIds" must include only numbers' });
   }
   next();

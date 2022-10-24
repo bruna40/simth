@@ -12,8 +12,12 @@ export default class ProductService {
     return products;
   }
 
-  static async update(productId: number, orderId: number) {
-    const products = await ProductModel.update(productId, orderId);
+  static async updateOrder(productsId: number[], orderId: number) {
+    const products = await Promise.all(productsId.map(async (id) => {
+      const product = await ProductModel.update(id, orderId);
+      return product;
+    }));
+
     return products;
   }
 }

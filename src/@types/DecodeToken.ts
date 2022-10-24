@@ -1,7 +1,7 @@
 export default interface DecodeToken {
   payload: {
     id: number;
-    username: string;
+    name: string;
   };
   [key: string]: any;
 
